@@ -22,4 +22,11 @@ class Profile(models.Model):
         instance.profile.save()
 
     def save_profile(self):
-        self.save()
+        self.save() 
+
+class Projects(models.Model):
+    title = models.CharField(max_length=200)
+    image = models.ImageField()
+    description = models.TextField()
+    url = models.URLField()
+    date = models.DateTimeField()
