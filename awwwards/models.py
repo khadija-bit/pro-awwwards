@@ -26,9 +26,9 @@ class Profile(models.Model):
 
 class Projects(models.Model):
     title = models.CharField(max_length=200)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='images/', default='')
     description = models.TextField()
-    url = models.URLField()
+    url = models.URLField(label='Your website')
     date = models.DateTimeField()
 
     def __str__(self):
@@ -48,3 +48,33 @@ class Projects(models.Model):
     @classmethod
     def all_project(cls):
         return cls.objects.all()    
+
+
+class Review(models.Model):
+    RATING_CHOICES = (
+        (1, '1')
+        (2, '2')
+        (3, '3')
+        (4, '4')
+        (5, '5')
+        (6, '6')
+        (7, '7')
+        (8, '8')
+        (9, '9')
+        (10, '10')
+    )
+    design = models.IntegerField(choices=RATING_CHOICES)
+    usability = models.IntegerField(choices=RATING_CHOICES)
+    content = models.IntegerField(choices=RATING_CHOICES)
+    overall_total = models.IntegerField()
+    date = models.DateTimeField()
+    profile = models.ForeignKey(Profile)
+    projects = models.ForeignKey(Projects)
+
+    def __str__(self):
+        return self.design
+
+    @classmethod
+    def all_reviews(cls, id):
+        reviews = Review.objects.filter(project_id = id).all()
+        return reviews
