@@ -30,3 +30,21 @@ class Projects(models.Model):
     description = models.TextField()
     url = models.URLField()
     date = models.DateTimeField()
+
+    def __str__(self):
+        return f'{self.title}'
+
+    def save_projects(self):
+        self.save()
+
+    def delete_projects(self):
+        self.delete()
+
+    @classmethod
+    def search_projects(cls,search_term):
+        title = cls.objects.filter(title__icontains = search_term)
+        return title  
+
+    @classmethod
+    def all_project(cls):
+        return cls.objects.all()    
