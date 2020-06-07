@@ -1,7 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Profile, Project, Review
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from .forms import SignInForm,ProfileForm, ProjectForm,ReviewForm
 
 # Create your views here.
 def index(request):
@@ -26,13 +25,6 @@ def profile(request):
     return render(request, 'profile.html')
 
 def new_profile(request):
-    if request.method == 'POST':
-        form = ProfileForm(request.POST)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = current_user
-            profile.save()
-            return redirect('index')
-        else:
-            form = ProfileForm()
+
+    form = ProfileForm()
     return render(request, 'new_profile.html',{"form":form})
