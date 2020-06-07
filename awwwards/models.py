@@ -24,7 +24,7 @@ class Profile(models.Model):
     def save_profile(self):
         self.save() 
 
-class Projects(models.Model):
+class Project(models.Model):
     title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='images/', default='')
     description = models.TextField()
@@ -69,7 +69,7 @@ class Review(models.Model):
     overall_total = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
     profile = models.ForeignKey(Profile)
-    projects = models.ForeignKey(Projects)
+    projects = models.ForeignKey(Project)
 
     def __str__(self):
         return self.design
