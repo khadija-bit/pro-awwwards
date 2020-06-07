@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect
 from .models import Profile, Project, Review
 from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required(login_url='/accounts/login/')
 def index(request):
     projects = Project.objects.all()
     profile = Profile.objects.all()
@@ -21,6 +23,8 @@ def search_results(request):
         message = "You haven't searched for any term "
         return render(request, 'search.html',{"message":message})   
 
+
+@login_required(login_url='/accounts/login/')
 def profile(request):
     return render(request, 'profile.html')
 
