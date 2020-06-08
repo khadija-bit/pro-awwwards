@@ -72,9 +72,13 @@ class Review(models.Model):
     projects = models.ForeignKey(Project)
 
     def __str__(self):
-        return self.design
+        return f'{self.design}'
 
     @classmethod
     def all_reviews(cls, id):
         reviews = Review.objects.filter(project_id = id).all()
         return reviews
+
+class SignUpForm(models.Model):
+    name = models.CharField(max_length = 30)
+    email = models.EmailField()

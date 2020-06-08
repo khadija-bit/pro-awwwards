@@ -15,7 +15,7 @@
 {% for project in projects %}
 <div class="col-sm-6">
     <div class="card-body">
-        <img src="{{project.image.url}}" alt="">
+        <img src="{{project.image.url}}" alt="" style="width: 400px; height: 350px;">
         <h1 class="card-title">{{project.title}}</h1>
         <p>{{project.description}}</p>
         <p style="margin-left: 10px;"> {{project.date|timesince}} ago</p>

@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
-from .models import Profile, Project, Review
+from .models import Profile, Project, Review,SignUpForm
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from .forms import SignInForm,ProfileForm, ProjectForm,ReviewForm
 from django.contrib.auth.models import User
-
+from .email import send_welcome_email
 # Create your views here.
 def index(request):
     projects = Project.objects.all()
@@ -43,4 +43,42 @@ def new_profile(request):
 
     return render(request, 'new_profile.html',{"form":form})
 
+def signIn(request):
+    if request.method == 'POST':
+        form = SignInForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['your_name']
+            email = form.cleaned_data['email']
+            recipient = SignUpForm(name = name, email=email)
+            recipient.save()
+            send_welcome_email(name,email)
+            HttpResponseRedirect('signIn')
+    else:
+        form = SignInForm()
+    return render(request,'registration/registration_form.html',{"form":form})
 
+def project(request,project_id):
+    project = Project.objects.get(id = project_id)
+    rating = round(((project.design + project.usability + project.content)/3),2)
+    if request.method == 'POST':
+        form = ReviewForm(request,POST)
+        if form.is_valid:
+            project.vote_submission += 1
+            if project.design == 0:
+                project.design = int(request.POST['design'])
+            else:
+                project.design = int(project.design + int(request.POST['design']))/2
+            if project.usability == 0:
+                project.usability = int(request.POST['usability'])
+            else:
+                project.usability = int(project.usability + int(request.POST['usability']))/2
+            if project.content == 0:
+                project.content = int(request.POST['content'])
+            else:
+                project.content = int(project.content + int(request.POST['content']))/2        
+            project.save()
+            return redirect(reverse(project,args=[project_id]))     
+
+    else:
+        form = ReviewForm()
+    return render(render,'project.html',{"form":form,"project":project,"rating":rating})
