@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
+{% load bootstrap3 %}
 {% load static %}
+{% block styles %}
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% endblock %}
 {% block content %}
 <div class="container-fluid">
     {% if projects %}
 
     <div class="projec" style="background: url('{{project.image.url}}');">
-        <img src="https://unsplash.com/photos/MA8YoAoKpfY" style="width: 100%; height: 100%;" alt="">
+        <img src="" style="width: 100%; height: 100%;" alt="">
 
     </div>
 
