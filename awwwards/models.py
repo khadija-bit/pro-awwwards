@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 # Create your models here.
 class Profile(models.Model):
-    profile_photo = models.ImageField()
+    profile_photo = models.ImageField(upload_to='images/')
     bio = models.TextField(max_length=300,blank=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     contact = models.EmailField(max_length=254)
@@ -26,7 +26,7 @@ class Profile(models.Model):
 
 class Project(models.Model):
     title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='images/', default='')
+    image = models.ImageField(upload_to='images/', blank=True, default='')
     description = models.TextField()
     url = models.URLField()
     date = models.DateTimeField(auto_now_add=True)

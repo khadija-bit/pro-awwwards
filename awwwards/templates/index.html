@@ -1,2 +1,20 @@
 {% extends 'base.html' %}
-<h1>PRO AWWARD</h1>
+{% load static %}
+{% block content %}
+<div class="container">
+    {% if projects %}
+    <div class="row">
+    {% for project in projects %}
+    <div class="col-md-4">
+        <div class="card-body">
+            <img src="{{project.image.url}}" alt="" style="width: 200px; height: 200px;">
+            <h1 class="card-title">{{project.title}}</h1>
+            <p style="margin-left: 10px;"> {{project.date|timesince}} ago</p>
+            <a href="{{project.url}}"><button class="btn btn-success" > View More</button></a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -24,10 +24,10 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{% url 'profile'%}"><span class="glyphicon glyphicon-user"></span>Profile</a></li>
-                        <li><a href="/accounts/register/"><span class="glyphicon glyphicon-info-sign"></span>Sign Up</a></li>
-                        <li><a href="/accounts/login/"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                        <li><a href="/accounts/password/change"><span class="glyphicon glyphicon-info-sign"></span>Change Password</a></li>
+                        <li><a href="/accounts/login"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
                         {% else %}
-                        <li><a href="/accounts/login/"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+                        <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0" role="search" action="{% url 'search_results'%}">
                         <input name="project" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -39,4 +39,4 @@
         </nav>
       
 </body>   
-</html>
+</html
