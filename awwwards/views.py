@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 def index(request):
     projects = Project.objects.all()
     profile = Profile.objects.all()
-    return render(request,'index.html',{"projects":projects})
+    return render(request,'index.html',{"projects":projects,"profile":profile})
 
 def search_results(request):
 
@@ -23,20 +23,24 @@ def search_results(request):
         message = "You haven't searched for any term "
         return render(request, 'search.html',{"message":message})   
 
-def profile(request):
+def profile(request): 
     current_user = request.user
-    profile = Profile.object.get(username=current_user)
-    return render(request, 'profile.html',{"profile:profile"})
+    profiles = Profile.objects.filter(user=current_user)
+    projects = Project.objects.filter(user=current_user)    
+    return render(request, 'profile.html',{"profiles":profiles,"projects":projects})
 
 def new_profile(request):
     current_user = request.user
     if request.method == 'POST':
-        form = ProfileForm(request.POST)
+        form = ProfileForm(request.POST,request.FILES)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = current_user
             profile.save()
-            return redirect('index')
+            return redirect('profile')
         else:
             form = ProfileForm()
+
     return render(request, 'new_profile.html',{"form":form})
+
+

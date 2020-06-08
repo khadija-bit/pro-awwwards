@@ -3,20 +3,20 @@
 <div class="container">
 <div class="row">
 <div class="col-md-4">
-<img src="{{user.profile.image.url}}" class="square" alt="">
-<h1>{{user.username}}</h1>
-<p>{{user.profile.bio}}</p>
+<h1 class="text-center">{{profiles.user.username}}</h1>
+<div class="card-text">
+{%if profiles.profile_photo %}
+<img src="{{profiles.profile_photo.url}}" alt="">
+{% else %}
+{% endif %}
+
 </div>
 </div>
 </div>
+</div>
+
 <div class="container">
 <div class="card">
-    {% if projects%}
-    {% for project in projects %}
-     {{project.title}}
-    
-    {% endfor %}
-    {% endif %}
 </div>
 </div>
 {% endblock %}
