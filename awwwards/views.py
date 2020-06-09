@@ -1,14 +1,19 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import Profile, Project, Review,SignUpForm
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from .forms import SignInForm,ProfileForm, ProjectForm,ReviewForm
 from django.contrib.auth.models import User
 from .email import send_welcome_email
+from django.db.models import Avg
+
 # Create your views here.
 def index(request):
     projects = Project.objects.all()
     profile = Profile.objects.all()
-    return render(request,'index.html',{"projects":projects,"profile":profile})
+    rating =   Review.objects.all()
+    form = ReviewForm()
+   
+    return render(request,'index.html',{"projects":projects,"profile":profile,"ratin":rating,"form":form})
 
 def search_results(request):
 
@@ -25,23 +30,27 @@ def search_results(request):
 
 def profile(request): 
     current_user = request.user
-    profiles = Profile.objects.filter(user=current_user)
-    projects = Project.objects.filter(user=current_user)    
-    return render(request, 'profile.html',{"profiles":profiles,"projects":projects})
+    profiles = Profile.objects.filter(user=request.user)
+    projects = Project.objects.all()
+    form = ReviewForm()
+    
+    return render(request, 'profile.html',locals())
 
-def new_profile(request):
-    current_user = request.user
+def submitproject(request):
+    form = ProjectForm()
     if request.method == 'POST':
-        form = ProfileForm(request.POST,request.FILES)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = current_user
-            profile.save()
-            return redirect('profile')
-        else:
-            form = ProfileForm()
+        form = ProjectForm(request.POST,request.FILES)
+        user = request.user.id
 
-    return render(request, 'new_profile.html',{"form":form})
+        if form.is_valid():
+            upload = form.save(commit=False)
+            upload.user = current_user
+            upload.save()
+            return redirect('index')
+        else:
+            form = ProjectForm()
+
+    return render(request, 'submit_project.html',locals())
 
 def signIn(request):
     if request.method == 'POST':
@@ -57,28 +66,21 @@ def signIn(request):
         form = SignInForm()
     return render(request,'registration/registration_form.html',{"form":form})
 
-def project(request,project_id):
-    project = Project.objects.get(id = project_id)
-    rating = round(((project.design + project.usability + project.content)/3),2)
+def rateProject(request,project_id):
+    project = get_object_or_404(Project,pk=project_id)
+    reviews = Review.objects.filter(project = project)
+    design = reviews.aggregate(Avg('design'))['design__avg']
+    usability = reviews.aggregate(Avg('usability'))['usability__avg']
+    content = reviews.aggregate(Avg('content'))['content__avg']
+    overall_total = reviews.aggregate(Avg('overall_total'))['overall_total__avg']
+    
     if request.method == 'POST':
-        form = ReviewForm(request,POST)
-        if form.is_valid:
-            project.vote_submission += 1
-            if project.design == 0:
-                project.design = int(request.POST['design'])
-            else:
-                project.design = int(project.design + int(request.POST['design']))/2
-            if project.usability == 0:
-                project.usability = int(request.POST['usability'])
-            else:
-                project.usability = int(project.usability + int(request.POST['usability']))/2
-            if project.content == 0:
-                project.content = int(request.POST['content'])
-            else:
-                project.content = int(project.content + int(request.POST['content']))/2        
-            project.save()
-            return redirect(reverse(project,args=[project_id]))     
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            rating = form.save(commit=False)
+            rating.overall_total = (rating.design + rating.usability + rating.content) / 3
+            rating.project = project
+            rating.user = request.user
+            rating.save()
 
-    else:
-        form = ReviewForm()
-    return render(render,'project.html',{"form":form,"project":project,"rating":rating})
+    return redirect('index')

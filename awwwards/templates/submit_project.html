@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+<div class="container-fluid">
+<div class="jumbotron">
+<div class="row">
+<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+<form enctype="multipart/form" action="{% url 'new_project' %}" method="project">
+    {% csrf_token %}
+    {% bootstrap_form form layout='inline' %}
+
+    <div class="form-group">
+    <input type="submit" class="btn btn-success btn-sm " value="Submit">
+
+    </div>
+</form>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
