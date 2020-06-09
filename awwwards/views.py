@@ -33,8 +33,23 @@ def profile(request):
     profiles = Profile.objects.filter(user=request.user)
     projects = Project.objects.all()
     form = ReviewForm()
-    
+
     return render(request, 'profile.html',locals())
+
+def updateProfile(request):
+    profile = Profile.objects.get(user=request.user)
+    
+    if request.method == 'POST':
+        updatProfile = ProfileForm(request.POST,request.FILES,instance=request.user.profile)
+        if updateProfile.is_valid():
+            updateProfile.save()
+
+        return redirect('profile')
+    else:
+        updateProfile = ProfileForm(instance=request.user.profile) 
+
+    return render(request,'update_profile.html',locals())           
+
 
 def submitproject(request):
     form = ProjectForm()

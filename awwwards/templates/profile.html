@@ -7,10 +7,20 @@
 <div class="col-md-4">
 <h1 class="text-center">{{profiles.user.username}}</h1>
 <div class="card-text">
-{%if profiles.profile_photo %}
-<img src="{{profiles.profile_photo.url}}" alt="">
+{%if user.profiles.profile_photo %}
+<img src="{{request.user.profile.profile_photo}}" alt="">
 {% else %}
+
 {% endif %}
+</div>
+</div>
+
+<div class="col_lg-7 col-md-7 col-sm-7 col-xs-7">
+<h1 class="prof"> {{request.user.username}}</h1>
+<p>Bio: {{request.user.profile.bio}}</p>
+<p>Email:{{request.user.profile.email}}</p>
+<p><a href="{% url 'update_Profile' %}">Edit Profile</a></p>
+<div>
 
 </div>
 </div>

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="jumbotron">
+<div class="row">
+<div class="col_lg-7 col-md-7 col-sm-7 col-xs-7">
+    <form enctype="multipart/form" action="{% url 'update_Profile' %}" method="project">
+        {% csrf_token %}
+        {% bootstrap_form updateProfile %}
+    
+        <div class="form-group">
+        <input type="submit" class="btn btn-success btn-sm " value="Submit">
+    
+        </div>
+    </form>
+
+</form>
+</div>
+</div>
+    </div>
+</div>
+{% endblock %}
