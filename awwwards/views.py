@@ -38,7 +38,7 @@ def profile(request):
 
 def updateProfile(request):
     profile = Profile.objects.get(user=request.user)
-    
+
     if request.method == 'POST':
         updatProfile = ProfileForm(request.POST,request.FILES,instance=request.user.profile)
         if updateProfile.is_valid():
@@ -81,7 +81,7 @@ def signIn(request):
         form = SignInForm()
     return render(request,'registration/registration_form.html',{"form":form})
 
-def rateProject(request,project_id):
+def rateProject(request, project_id):
     project = get_object_or_404(Project,pk=project_id)
     reviews = Review.objects.filter(project = project)
     design = reviews.aggregate(Avg('design'))['design__avg']
