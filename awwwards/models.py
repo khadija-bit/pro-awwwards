@@ -68,7 +68,6 @@ class Review(models.Model):
     content = models.IntegerField(choices=RATING_CHOICES)
     overall_total = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
-    profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
     projects = models.ForeignKey(Project,on_delete=models.CASCADE)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 

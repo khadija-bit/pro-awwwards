@@ -10,13 +10,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 # Create your views here.
-def index(request,project_id):
+def index(request):
     projects = Project.objects.all()
     profile = Profile.objects.all()
-    rating =   Review.objects.all()
+    rating = Review.objects.all()
     form = ReviewForm()
    
-    return render(request,'index.html',{"projects":projects,"profile":profile,"ratin":rating,"form":form})
+    return render(request,'index.html',{"projects":projects,"profile":profile,"rating":rating,"form":form})
 
 def search_results(request):
 
@@ -56,6 +56,7 @@ def updateProfile(request):
 
 def submitproject(request):
     form = ProjectForm()
+    current_user = request.user
     if request.method == 'POST':
         form = ProjectForm(request.POST,request.FILES)
         user = request.user.id
@@ -86,7 +87,7 @@ def signIn(request):
 
 def rateProject(request, project_id):
     project = get_object_or_404(Project,pk=project_id)
-    reviews = Review.objects.filter(project = project)
+    reviews = Review.objects.filter(projects = project)
     design = reviews.aggregate(Avg('design'))['design__avg']
     usability = reviews.aggregate(Avg('usability'))['usability__avg']
     content = reviews.aggregate(Avg('content'))['content__avg']
@@ -97,11 +98,11 @@ def rateProject(request, project_id):
         if form.is_valid():
             rating = form.save(commit=False)
             rating.overall_total = (rating.design + rating.usability + rating.content) / 3
-            rating.project = project
+            rating.projects = project
             rating.user = request.user
             rating.save()
 
-    return redirect('index',project_id=project_id)
+    return redirect('index')
 
 class ProfileList(APIView):
     def get(self, request,format=None):

@@ -12,9 +12,12 @@
     {% for project in projects %}
     <div class="col-md-4">
         <div class="card-body">
-            <img src="{{project.image.url}}" alt="Card image cap" style="width: 300px; height: 200px;">
-            <h1 class="card-title">{{project.title}}</h1>
+
+            <img src="{{project.image}}" alt="Card image cap" style="width: 300px; height: 200px;">
+
+             <h1 class="card-title">{{project.title}}</h1>
             <p style="margin-left: 10px;"> {{project.date|timesince}} ago</p>
+            
             <a href="{{project.url}}">
                 <button class="btn btn-primary"> View More</button>
             </a>
@@ -49,7 +52,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{% url 'rateProject' %}" enctype="multipart/form-data" method="post">
+                    <form action="{% url 'rateProject' project_id=project.id %}" enctype="multipart/form-data" method="post">
                         {% csrf_token %}
                     {% bootstrap_form form %}
                         <input type="submit" value="Submit" class="btn btn-primary">

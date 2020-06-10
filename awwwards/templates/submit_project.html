@@ -6,7 +6,7 @@
 <div class="jumbotron">
 <div class="row">
 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-<form enctype="multipart/form" action="{% url 'new_project' %}" method="project">
+<form enctype="multipart/form" method="post">
     {% csrf_token %}
     {% bootstrap_form form layout='inline' %}
 
