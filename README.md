@@ -6,6 +6,8 @@ Khadija Hassan
 # Description
 this a Django application which replicate awwwards one post the project and people can review.
 
+# Live Link
+https://pro-awwwards.herokuapp.com/
 
 # Setup Installation
 Github cloning:

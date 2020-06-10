@@ -5,9 +5,12 @@ from .forms import SignInForm,ProfileForm, ProjectForm,ReviewForm
 from django.contrib.auth.models import User
 from .email import send_welcome_email
 from django.db.models import Avg
+from .serializer import ProfileSerializer,ProjectSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 # Create your views here.
-def index(request):
+def index(request,project_id):
     projects = Project.objects.all()
     profile = Profile.objects.all()
     rating =   Review.objects.all()
@@ -98,4 +101,30 @@ def rateProject(request, project_id):
             rating.user = request.user
             rating.save()
 
-    return redirect('index')
+    return redirect('index',project_id=project_id)
+
+class ProfileList(APIView):
+    def get(self, request,format=None):
+        all_merch = Profile.objects.all()
+        serializers = ProfileSerializer(all_merch, many=True)
+        return Response(serializers.data)
+
+    def post(self, request, format=None):
+        serializers = ProfileSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProjectList(APIView):
+    def get(self, request,format=None):
+        all_merch = Project.objects.all()
+        serializers = ProjectSerializer(all_merch, many=True)
+        return Response(serializers.data)
+
+    def post(self, request, format=None):
+        serializers = ProjectSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)    
