@@ -17,12 +17,13 @@
                         {% csrf_token %}
                         {% bootstrap_form form %}
                         <div class="form-group">
-                            <input type="submit" class="btn btn-primary btn-sm" value="Sign Up">
+                            <input type="submit" class="btn btn-primary btn-sm" value="Login">
                         </div>
 
                         <input type="hidden" name="next" value="{{next}}">
             
                     </form>
+                    <a href="/accounts/register/">Don't have account? No worry Sign up here</a>
                 </div>
             </div>
         </div>

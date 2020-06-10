@@ -44,12 +44,12 @@ def updateProfile(request):
 
     if request.method == 'POST':
         updatProfile = ProfileForm(request.POST,request.FILES,instance=request.user.profile)
-        if updateProfile.is_valid():
-            updateProfile.save()
+        if form.is_valid():
+            form.save()
 
         return redirect('profile')
     else:
-        updateProfile = ProfileForm(instance=request.user.profile) 
+        form = ProfileForm(instance=request.user.profile) 
 
     return render(request,'update_profile.html',locals())           
 
