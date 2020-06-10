@@ -5,6 +5,12 @@ Khadija Hassan
 
 # Description
 this a Django application which replicate awwwards one post the project and people can review.
+# Use stories
+* a user can search projects. 
+* a user can review/rate on other posted project.
+* a user can signup and login .
+* a user can post the project .
+* a user can view profile
 
 # Live Link
 https://pro-awwwards.herokuapp.com/
